@@ -1,0 +1,5 @@
+allure-pytest==2.15.0
+pydantic==2.11.3
+pytest==8.3.5
+pytest-xdist==3.6.1
+requests==2.32.3
