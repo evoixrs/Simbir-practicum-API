@@ -26,12 +26,6 @@ jobs:
         with:
           path: api-tests
 
-      - name: Checkout test service
-        uses: actions/checkout@v4
-        with:
-          repository: evoixrs/test-service
-          path: test-service
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -44,6 +38,12 @@ jobs:
           sudo mv allure-2.34.1 /opt/allure
           sudo ln -s /opt/allure/bin/allure /usr/bin/allure
           allure --version
+
+      - name: Checkout test service
+        uses: actions/checkout@v4
+        with:
+          repository: sun6r0/test-service
+          path: test-service
 
       - name: Start test service
         working-directory: test-service
@@ -81,7 +81,24 @@ jobs:
         if: always()
         working-directory: api-tests
         run: |
-          allure generate allure-results --clean -o allure-report
+          if [ -d allure-results ] && [ "$(find allure-results -type f | wc -l)" -gt 0 ]; then
+            allure generate allure-results --clean -o allure-report
+          else
+            mkdir -p allure-report
+            cat > allure-report/index.html <<'EOF'
+          <!doctype html>
+          <html lang="ru">
+            <head>
+              <meta charset="utf-8">
+              <title>Allure report is unavailable</title>
+            </head>
+            <body>
+              <h1>Allure report is unavailable</h1>
+              <p>Тесты не были запущены или allure-results не были созданы.</p>
+            </body>
+          </html>
+          EOF
+          fi
 
       - name: Upload test artifacts
         if: always()
