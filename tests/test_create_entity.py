@@ -20,7 +20,16 @@ pytestmark = pytest.mark.xdist_group("api_crud")
 
 @allure.feature("Сущности")
 @allure.story("Создание сущности")
-@allure.title("Создание сущности через POST /api/create")
+@allure.suite("API tests")
+@allure.sub_suite("Entity CRUD")
+@allure.tag("api", "crud", "positive", "TC-01")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.title("TC-01: Создание сущности через POST /api/create")
+@allure.description(
+    "Проверка создания сущности по тест-кейсу TC-01 из docs/test_cases.md. "
+    "Тест отправляет POST /api/create, получает id созданной сущности, "
+    "затем проверяет созданные данные через GET /api/get/{id}."
+)
 def test_create_entity(api_client: EntityClient) -> None:
     payload = create_entity_payload()
     entity_id = None

@@ -16,7 +16,16 @@ pytestmark = pytest.mark.xdist_group("api_crud")
 
 @allure.feature("Сущности")
 @allure.story("Получение сущности")
-@allure.title("Получение сущности через GET /api/get/{id}")
+@allure.suite("API tests")
+@allure.sub_suite("Entity CRUD")
+@allure.tag("api", "crud", "positive", "TC-03")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.title("TC-03: Получение сущности через GET /api/get/{id}")
+@allure.description(
+    "Проверка получения сущности по тест-кейсу TC-03 из docs/test_cases.md. "
+    "Перед тестом создается сущность, затем тест получает ее через GET /api/get/{id} "
+    "и сравнивает ответ с данными создания."
+)
 def test_get_entity(
     api_client: EntityClient,
     created_entity: CreatedEntity,

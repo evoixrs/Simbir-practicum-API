@@ -18,7 +18,16 @@ pytestmark = pytest.mark.xdist_group("api_crud")
 
 @allure.feature("Сущности")
 @allure.story("Обновление сущности")
-@allure.title("Обновление сущности через PATCH /api/patch/{id}")
+@allure.suite("API tests")
+@allure.sub_suite("Entity CRUD")
+@allure.tag("api", "crud", "positive", "TC-05")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.title("TC-05: Обновление сущности через PATCH /api/patch/{id}")
+@allure.description(
+    "Проверка обновления сущности по тест-кейсу TC-05 из docs/test_cases.md. "
+    "Перед тестом создается сущность, затем тест обновляет ее через PATCH /api/patch/{id} "
+    "и проверяет обновленные данные через GET /api/get/{id}."
+)
 def test_patch_entity(
     api_client: EntityClient,
     created_entity: CreatedEntity,

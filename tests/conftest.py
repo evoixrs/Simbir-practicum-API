@@ -74,6 +74,7 @@ def created_entity(api_client: EntityClient) -> Generator[CreatedEntity, None, N
     try:
         yield entity
     finally:
+        # DELETE-тест удаляет сущность сам, поэтому cleanup пропускает повторное удаление.
         if entity.is_deleted:
             return
 
@@ -106,6 +107,7 @@ def created_entities(
         yield entities
     finally:
         for entity in entities:
+            # DELETE-тест удаляет сущность сам, поэтому cleanup пропускает повторное удаление.
             if entity.is_deleted:
                 continue
 

@@ -11,7 +11,16 @@ pytestmark = pytest.mark.xdist_group("api_crud")
 
 @allure.feature("Сущности")
 @allure.story("Удаление сущности")
-@allure.title("Удаление сущности через DELETE /api/delete/{id}")
+@allure.suite("API tests")
+@allure.sub_suite("Entity CRUD")
+@allure.tag("api", "crud", "positive", "TC-02")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.title("TC-02: Удаление сущности через DELETE /api/delete/{id}")
+@allure.description(
+    "Проверка удаления сущности по тест-кейсу TC-02 из docs/test_cases.md. "
+    "Перед тестом создается сущность, затем тест отправляет DELETE /api/delete/{id} "
+    "и проверяет успешный ответ удаления."
+)
 def test_delete_entity(
     api_client: EntityClient,
     created_entity: CreatedEntity,

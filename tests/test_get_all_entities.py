@@ -26,7 +26,16 @@ def find_entity_by_id(entities: list[EntityResponse], entity_id: int) -> EntityR
 
 @allure.feature("Сущности")
 @allure.story("Получение списка сущностей")
-@allure.title("Получение списка сущностей через GET /api/getAll")
+@allure.suite("API tests")
+@allure.sub_suite("Entity CRUD")
+@allure.tag("api", "crud", "positive", "TC-04")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.title("TC-04: Получение списка сущностей через GET /api/getAll")
+@allure.description(
+    "Проверка получения списка сущностей по тест-кейсу TC-04 из docs/test_cases.md. "
+    "Перед тестом создаются две сущности, затем тест запрашивает список через "
+    "GET /api/getAll с query-параметрами и проверяет наличие созданных сущностей."
+)
 def test_get_all_entities(
     api_client: EntityClient,
     created_entities: list[CreatedEntity],
