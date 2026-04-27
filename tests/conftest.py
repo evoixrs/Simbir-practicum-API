@@ -19,6 +19,7 @@ class CreatedEntity:
     entity_id: int
     payload: EntityRequest
     entity: EntityResponse
+    is_deleted: bool = False
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -73,6 +74,9 @@ def created_entity(api_client: EntityClient) -> Generator[CreatedEntity, None, N
     try:
         yield entity
     finally:
+        if entity.is_deleted:
+            return
+
         delete_response = api_client.delete_entity(entity_id=entity.entity_id)
         if delete_response.status_code != 204:
             logger.warning(
@@ -102,6 +106,9 @@ def created_entities(
         yield entities
     finally:
         for entity in entities:
+            if entity.is_deleted:
+                continue
+
             delete_response = api_client.delete_entity(entity_id=entity.entity_id)
             if delete_response.status_code != 204:
                 logger.warning(

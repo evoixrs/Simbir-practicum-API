@@ -18,6 +18,13 @@ def assert_content_type(response: Response, expected_content_type: str) -> None:
     )
 
 
+def assert_response_has_header(response: Response, header_name: str) -> None:
+    assert header_name in response.headers, (
+        f"Expected response header '{header_name}'. "
+        f"Actual headers: {dict(response.headers)}"
+    )
+
+
 def assert_entity_matches_payload(
     entity: EntityResponse,
     payload: EntityRequest,
