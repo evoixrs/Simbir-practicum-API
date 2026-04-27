@@ -1,8 +1,12 @@
 import allure
+import pytest
 
 from api_client.client import EntityClient
 from helpers.assert_helpers import assert_response_has_header, assert_status_code
 from tests.conftest import CreatedEntity
+
+
+pytestmark = pytest.mark.xdist_group("api_crud")
 
 
 @allure.feature("Сущности")

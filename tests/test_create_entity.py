@@ -1,6 +1,7 @@
 import logging
 
 import allure
+import pytest
 
 from api_client.client import EntityClient
 from api_client.payloads.entity import create_entity_payload
@@ -14,6 +15,7 @@ from helpers.response_helpers import deserialize_entity, get_created_entity_id
 
 
 logger = logging.getLogger("api_tests")
+pytestmark = pytest.mark.xdist_group("api_crud")
 
 
 @allure.feature("Сущности")

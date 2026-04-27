@@ -1,1 +1,48 @@
-"""Tests for PATCH /api/patch/{id}."""
+import allure
+import pytest
+
+from api_client.client import EntityClient
+from api_client.payloads.entity import patch_entity_payload
+from helpers.assert_helpers import (
+    assert_content_type,
+    assert_entity_matches_payload,
+    assert_response_has_header,
+    assert_status_code,
+)
+from helpers.response_helpers import deserialize_entity
+from tests.conftest import CreatedEntity
+
+
+pytestmark = pytest.mark.xdist_group("api_crud")
+
+
+@allure.feature("Сущности")
+@allure.story("Обновление сущности")
+@allure.title("Обновление сущности через PATCH /api/patch/{id}")
+def test_patch_entity(
+    api_client: EntityClient,
+    created_entity: CreatedEntity,
+) -> None:
+    payload = patch_entity_payload()
+
+    with allure.step("Отправить PATCH /api/patch/{id}"):
+        patch_response = api_client.patch_entity(
+            entity_id=created_entity.entity_id,
+            payload=payload.model_dump(exclude_none=True),
+        )
+        assert_status_code(patch_response, 204)
+        assert_response_has_header(patch_response, "date")
+
+    with allure.step("Получить обновленную сущность через GET /api/get/{id}"):
+        get_response = api_client.get_entity(entity_id=created_entity.entity_id)
+        assert_status_code(get_response, 200)
+        assert_content_type(get_response, "application/json")
+
+    with allure.step("Десериализовать Response body в объект EntityResponse"):
+        entity = deserialize_entity(get_response)
+
+    with allure.step("Проверить обновленные данные сущности"):
+        assert entity.id == created_entity.entity_id, (
+            f"Expected entity id '{created_entity.entity_id}', got '{entity.id}'"
+        )
+        assert_entity_matches_payload(entity=entity, payload=payload)

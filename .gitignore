@@ -177,6 +177,7 @@ cython_debug/
 docs/Задание api.txt
 allure-results/
 allure-report/
+.tools/
 
 # Abstra
 # Abstra is an AI-powered process automation framework.
