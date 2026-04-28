@@ -1,0 +1,5 @@
+CREATE_ENTITY = "/api/create"
+DELETE_ENTITY = "/api/delete/{entity_id}"
+GET_ENTITY = "/api/get/{entity_id}"
+GET_ALL_ENTITIES = "/api/getAll"
+PATCH_ENTITY = "/api/patch/{entity_id}"
