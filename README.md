@@ -1,16 +1,79 @@
-# Simbir-practicum-API
+# Simbir Practicum API
 
-Учебный проект API-автотестов для локального тестового стенда.
+API-автотесты для локального тестового стенда `test-service`.
 
-## План работ
+## Что в проекте
 
-1. Создать каркас проекта для API-автотестов.
-2. Запустить тестовый стенд и изучить Swagger.
-3. Зафиксировать реальные request/response схемы всех ручек.
-4. Описать 5 тест-кейсов в `docs/test_cases.md`.
-5. Реализовать API-клиент, модели и helper-обвязку.
-6. Написать 5 положительных CRUD-автотестов для всех API-ручек.
-7. Настроить параллельный запуск тестов через `pytest-xdist`.
-8. Настроить Allure-отчетность.
-9. Настроить запуск в GitHub Actions.
-10. Оформить Pull Request из рабочей ветки в `main`.
+- `pytest` + `requests`
+- `pydantic`-модели для десериализации ответов
+- API-клиент для ручек сервиса
+- `Allure`-отчеты
+- параллельный запуск через `pytest-xdist`
+- запуск в GitHub Actions с публикацией Allure в GitHub Pages
+
+## Структура
+
+- [docs/test_cases.md](docs/test_cases.md) — тест-кейсы
+- `api_client/` — API-клиент, endpoints, модели и payload
+- `helpers/` — Allure-вложения, проверки и десериализация ответов
+- `tests/` — API-тесты
+- `pytest.ini` — настройки pytest
+- `requirements.txt` — зависимости проекта
+
+## Запуск стенда
+
+Тестовый стенд должен быть доступен по адресу:
+
+```text
+http://localhost:8080
+```
+
+Swagger-документация:
+
+```text
+http://localhost:8080/api/_/docs/swagger/
+```
+
+## Запуск тестов
+
+Обычный запуск:
+
+```bash
+pytest
+```
+
+Запуск с явным адресом стенда:
+
+```bash
+pytest --base-url=http://localhost:8080
+```
+
+Запуск отдельного теста:
+
+```bash
+pytest tests/test_create_entity.py
+```
+
+## Allure
+
+Сгенерировать локальный отчет:
+
+```bash
+pytest
+allure generate allure-results --clean -o allure-report
+```
+Открыть локальный отчет:
+
+```bash
+allure open allure-report
+```
+
+## CI
+
+В GitHub Actions настроены:
+
+- запуск тестового стенда
+- установка зависимостей
+- запуск API-тестов
+- генерация Allure-отчета
+- публикация отчета в GitHub Pages

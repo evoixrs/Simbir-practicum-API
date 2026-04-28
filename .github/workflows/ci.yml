@@ -111,13 +111,13 @@ jobs:
             api-tests/test.log
 
       - name: Upload Allure report for GitHub Pages
-        if: always()
+        if: always() && github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: api-tests/allure-report
 
   deploy:
-    if: always()
+    if: always() && github.event_name == 'push'
     needs: test
     runs-on: ubuntu-latest
 
