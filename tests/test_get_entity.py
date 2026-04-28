@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import allure
-import pytest
 
 from api_client.client import EntityClient
 from helpers.assert_helpers import (
@@ -11,9 +10,6 @@ from helpers.assert_helpers import (
 )
 from helpers.response_helpers import deserialize_entity
 from tests.conftest import CreatedEntity
-
-
-pytestmark = pytest.mark.xdist_group("api_crud")
 
 
 @allure.feature("Сущности")
