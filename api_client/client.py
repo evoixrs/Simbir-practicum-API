@@ -1,90 +1,10 @@
-import logging
-
-from requests import Response, Session
+from requests import Response
 
 from api_client import endpoints
-from helpers.allure_helpers import attach_request, attach_response
+from api_client.base_client import BaseClient
 
 
-logger = logging.getLogger("api_tests")
-
-
-class EntityClient:
-    def __init__(self, base_url: str, timeout: int = 10) -> None:
-        self.base_url = base_url.rstrip("/")
-        self.session = Session()
-        self.timeout = timeout
-
-    def build_url(self, path: str) -> str:
-        return f"{self.base_url}{path}"
-
-    def _send_request(
-        self,
-        method: str,
-        path: str,
-        payload: dict | None = None,
-        params: dict | None = None,
-    ) -> Response:
-        url = self.build_url(path)
-        logger.info("Request: %s %s", method.upper(), url)
-
-        if params:
-            logger.info("Query params: %s", params)
-
-        if payload:
-            logger.info("Request body: %s", payload)
-
-        attach_request(
-            method=method,
-            url=url,
-            payload=payload,
-            params=params,
-        )
-
-        response = self.session.request(
-            method=method,
-            url=url,
-            json=payload,
-            params=params,
-            timeout=self.timeout,
-        )
-
-        logger.info(
-            "Response: %s %s",
-            response.status_code,
-            response.text,
-        )
-        attach_response(response)
-
-        return response
-
-    def post(self, path: str, payload: dict | None = None) -> Response:
-        return self._send_request(
-            method="POST",
-            path=path,
-            payload=payload,
-        )
-
-    def delete(self, path: str) -> Response:
-        return self._send_request(
-            method="DELETE",
-            path=path,
-        )
-
-    def get(self, path: str, params: dict | None = None) -> Response:
-        return self._send_request(
-            method="GET",
-            path=path,
-            params=params,
-        )
-
-    def patch(self, path: str, payload: dict | None = None) -> Response:
-        return self._send_request(
-            method="PATCH",
-            path=path,
-            payload=payload,
-        )
-
+class EntityClient(BaseClient):
     def create_entity(self, payload: dict) -> Response:
         return self.post(path=endpoints.CREATE_ENTITY, payload=payload)
 
