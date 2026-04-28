@@ -1,6 +1,6 @@
 # Simbir Practicum API
 
-API-автотесты для локального тестового стенда `test-service`.
+API-автотесты для тестового стенда `test-service`.
 
 ## Что в проекте
 
@@ -84,6 +84,12 @@ allure open allure-report
 
 - запуск тестового стенда
 - установка зависимостей
-- запуск API-тестов
+- параллельный запуск API-тестов через `pytest-xdist`
 - генерация Allure-отчета
 - публикация отчета в GitHub Pages
+
+В CI тестовый стенд запускается из репозитория:
+
+```text
+https://github.com/bondarenkokate73/simbirsoft_sdet_project
+```
