@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import allure
 import pytest
 
@@ -32,7 +34,7 @@ def test_get_entity(
 ) -> None:
     with allure.step("Отправить GET /api/get/{id}"):
         get_response = api_client.get_entity(entity_id=created_entity.entity_id)
-        assert_status_code(get_response, 200)
+        assert_status_code(get_response, HTTPStatus.OK)
         assert_content_type(get_response, "application/json")
 
     with allure.step("Десериализовать Response body в объект EntityResponse"):

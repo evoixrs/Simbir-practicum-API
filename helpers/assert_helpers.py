@@ -1,9 +1,14 @@
+from http import HTTPStatus
+
 from requests import Response
 
 from api_client.models.entity import EntityRequest, EntityResponse
 
 
-def assert_status_code(response: Response, expected_status_code: int) -> None:
+def assert_status_code(
+    response: Response,
+    expected_status_code: int | HTTPStatus,
+) -> None:
     assert response.status_code == expected_status_code, (
         f"Expected status code {expected_status_code}, "
         f"got {response.status_code}. Response body: {response.text}"

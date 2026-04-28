@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import allure
 import pytest
 
@@ -39,12 +41,12 @@ def test_patch_entity(
             entity_id=created_entity.entity_id,
             payload=payload.model_dump(exclude_none=True),
         )
-        assert_status_code(patch_response, 204)
+        assert_status_code(patch_response, HTTPStatus.NO_CONTENT)
         assert_response_has_header(patch_response, "date")
 
     with allure.step("Получить обновленную сущность через GET /api/get/{id}"):
         get_response = api_client.get_entity(entity_id=created_entity.entity_id)
-        assert_status_code(get_response, 200)
+        assert_status_code(get_response, HTTPStatus.OK)
         assert_content_type(get_response, "application/json")
 
     with allure.step("Десериализовать Response body в объект EntityResponse"):

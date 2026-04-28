@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import allure
 import pytest
 
@@ -49,7 +51,7 @@ def test_get_all_entities(
 
     with allure.step("Отправить GET /api/getAll с query-параметрами"):
         get_all_response = api_client.get_all_entities(params=params)
-        assert_status_code(get_all_response, 200)
+        assert_status_code(get_all_response, HTTPStatus.OK)
         assert_content_type(get_all_response, "application/json")
 
     with allure.step("Десериализовать Response body в объект EntityFilterResponse"):

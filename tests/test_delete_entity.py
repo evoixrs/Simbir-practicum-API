@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import allure
 import pytest
 
@@ -32,5 +34,5 @@ def test_delete_entity(
         created_entity.is_deleted = True
 
     with allure.step("Проверить ответ удаления"):
-        assert_status_code(delete_response, 204)
+        assert_status_code(delete_response, HTTPStatus.NO_CONTENT)
         assert_response_has_header(delete_response, "date")

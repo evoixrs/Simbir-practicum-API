@@ -1,4 +1,5 @@
 import logging
+from http import HTTPStatus
 
 import allure
 import pytest
@@ -39,13 +40,13 @@ def test_create_entity(api_client: EntityClient) -> None:
             create_response = api_client.create_entity(
                 payload=payload.model_dump(exclude_none=True),
             )
-            assert_status_code(create_response, 200)
+            assert_status_code(create_response, HTTPStatus.OK)
             assert_content_type(create_response, "text/plain; charset=utf-8")
             entity_id = get_created_entity_id(create_response)
 
         with allure.step("Получить созданную сущность через GET /api/get/{id}"):
             get_response = api_client.get_entity(entity_id=entity_id)
-            assert_status_code(get_response, 200)
+            assert_status_code(get_response, HTTPStatus.OK)
             assert_content_type(get_response, "application/json")
 
         with allure.step("Десериализовать Response body в объект EntityResponse"):
@@ -61,7 +62,7 @@ def test_create_entity(api_client: EntityClient) -> None:
         if entity_id is not None:
             with allure.step("Удалить созданную тестовую сущность"):
                 delete_response = api_client.delete_entity(entity_id=entity_id)
-                if delete_response.status_code != 204:
+                if delete_response.status_code != HTTPStatus.NO_CONTENT:
                     logger.warning(
                         "Failed to delete test entity %s. Status: %s. Body: %s",
                         entity_id,

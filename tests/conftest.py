@@ -2,6 +2,7 @@ import logging
 import os
 from collections.abc import Generator
 from dataclasses import dataclass
+from http import HTTPStatus
 
 import pytest
 from dotenv import load_dotenv
@@ -56,11 +57,11 @@ def create_test_entity(
     create_response = api_client.create_entity(
         payload=payload.model_dump(exclude_none=True),
     )
-    assert_status_code(create_response, 200)
+    assert_status_code(create_response, HTTPStatus.OK)
     entity_id = get_created_entity_id(create_response)
 
     get_response = api_client.get_entity(entity_id=entity_id)
-    assert_status_code(get_response, 200)
+    assert_status_code(get_response, HTTPStatus.OK)
     entity = deserialize_entity(get_response)
 
     return CreatedEntity(
@@ -85,7 +86,7 @@ def created_entity(api_client: EntityClient) -> Generator[CreatedEntity, None, N
             return
 
         delete_response = api_client.delete_entity(entity_id=entity.entity_id)
-        if delete_response.status_code != 204:
+        if delete_response.status_code != HTTPStatus.NO_CONTENT:
             logger.warning(
                 "Failed to delete test entity %s. Status: %s. Body: %s",
                 entity.entity_id,
@@ -118,7 +119,7 @@ def created_entities(
                 continue
 
             delete_response = api_client.delete_entity(entity_id=entity.entity_id)
-            if delete_response.status_code != 204:
+            if delete_response.status_code != HTTPStatus.NO_CONTENT:
                 logger.warning(
                     "Failed to delete test entity %s. Status: %s. Body: %s",
                     entity.entity_id,
