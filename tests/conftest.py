@@ -1,8 +1,10 @@
 import logging
+import os
 from collections.abc import Generator
 from dataclasses import dataclass
 
 import pytest
+from dotenv import load_dotenv
 
 from api_client.client import EntityClient
 from api_client.models.entity import EntityRequest, EntityResponse
@@ -12,6 +14,7 @@ from helpers.response_helpers import deserialize_entity, get_created_entity_id
 
 
 logger = logging.getLogger("api_tests")
+load_dotenv()
 
 
 @dataclass
@@ -26,14 +29,17 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--base-url",
         action="store",
-        default="http://localhost:8080",
+        default=None,
         help="Base URL of API test stand",
     )
 
 
 @pytest.fixture(scope="session")
 def base_url(request: pytest.FixtureRequest) -> str:
-    url = request.config.getoption("--base-url")
+    url = request.config.getoption("--base-url") or os.getenv("BASE_URL")
+    if not url:
+        pytest.fail("Set API base URL with --base-url or BASE_URL in .env")
+
     logger.info("Base API URL: %s", url)
     return url
 
