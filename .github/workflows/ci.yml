@@ -44,7 +44,7 @@ jobs:
       - name: Checkout test service
         uses: actions/checkout@v4
         with:
-          repository: sun6r0/test-service
+          repository: bondarenkokate73/simbirsoft_sdet_project
           path: test-service
 
       - name: Start test service
